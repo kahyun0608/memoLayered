@@ -6,13 +6,11 @@ import com.example.layered.entity.Memo;
 import com.example.layered.service.MemoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController //@Controller + @ResponseBody
@@ -36,4 +34,41 @@ public class MemoController {
 
     }
 
+    //전체 조회
+    @GetMapping
+    public List<MemoResponseDto> findAllMemos() {
+
+        return memoService.findAllMemos();
+    }
+
+    //단건 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<MemoResponseDto> findMemoById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(memoService.findMemoById(id), HttpStatus.OK);
+    }
+
+    //단건 수정 기능
+    @PutMapping("/{id}")
+    public ResponseEntity<MemoResponseDto> updateMemo(
+            @PathVariable Long id,
+            @RequestBody MemoRequestDto dto
+    ){
+        return new ResponseEntity<>(memoService.updateMemo(id, dto.getTitle(), dto.getContents()), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MemoResponseDto> updateTitle(
+            @PathVariable Long id,
+            @RequestBody MemoRequestDto dto
+    ){
+        return new ResponseEntity<>(memoService.updateTitle(id, dto.getTitle(), dto.getContents()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMemo(@PathVariable Long id) {
+        memoService.deleteMemo(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

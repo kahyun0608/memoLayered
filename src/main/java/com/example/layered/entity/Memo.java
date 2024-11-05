@@ -26,7 +26,7 @@ public class Memo {
         this.contents = contents;
     }
 
-    public void updateTitle(String title, String contents) {
+    public void updateTitle(String title) {
         this.title = title;
     }
 }
